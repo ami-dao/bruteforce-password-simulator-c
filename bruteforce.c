@@ -3,8 +3,8 @@
 #include <time.h>
 #include <stdint.h>
 
-#define MAX_LENGTH 8
-#define CHARSET "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+#define MAX_LENGTH 3
+#define CHARSET "abcdefghijklmnopqrstuvwxyz"
 
 const char *g_charset = CHARSET;
 size_t charset_size;
@@ -101,7 +101,7 @@ int main(void)
     printf("Maximum supported length: %d\n\n", MAX_LENGTH);
 
     printf("Target password: ");
-    if (scanf("%8s", target) != 1)
+    if (scanf("%3s", target) != 1)
     {
         fprintf(stderr, "Input error.\n");
         return 1;
@@ -109,20 +109,14 @@ int main(void)
 
     if (!is_valid_target(target))
     {
-        fprintf(stderr, "Target contains characters not present in the charset.\n");
+        fprintf(stderr, "Target contains characters not allowed.\n");
         return 1;
     }
 
-    printf("Max length to try: ");
+    printf("Max length to try (1-%d): ", MAX_LENGTH);
     if (scanf("%d", &max_length) != 1 || max_length < 1 || max_length > MAX_LENGTH)
     {
         fprintf(stderr, "Invalid length.\n");
-        return 1;
-    }
-
-    if ((int)strlen(target) > max_length)
-    {
-        fprintf(stderr, "Max length is smaller than target length.\n");
         return 1;
     }
 
